@@ -1,20 +1,39 @@
-<!-- Veldig overkomplisert, ville bare teste med custom v-model -->
-
 <template>
-    <input type="text" v-model="inputValue" />
+    <input type="text" :value="localValue" @input="onInput"/>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-const props = defineProps<{
-    modelValue: string
-    'onUpdate:modelValue': (value: string) => void
-}>()
+import { ref, computed, watch } from 'vue';
 
-const inputValue = computed({
-    get: () => props.modelValue,
-    set: (value: string) => props['onUpdate:modelValue'](value)
-})
+// Define props
+const props = defineProps<{
+    modelValue: string;
+    'onUpdate:modelValue': (value: string) => void;
+}>();
+
+const localValue = ref(props.modelValue);
+
+// Define a validation function
+const valueIsValid = (value: string) => {
+    const pattern = /^[0-9+\-*/.]*$/; // Only allow numbers and math symbols
+    return value.match(pattern) !== null;
+};
+
+const onInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const value = target.value;
+    if (valueIsValid(value)) {
+        localValue.value = value;
+        props['onUpdate:modelValue'](value);
+    } else {
+            target.value = props.modelValue;
+    }
+};
+
+// Sync localValue with modelValue when the parent updates modelValue
+watch(() => props.modelValue, (newValue) => {
+    localValue.value = newValue;
+});
 </script>
 
 <style scoped>
