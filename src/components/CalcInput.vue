@@ -1,3 +1,4 @@
+<!-- Litt unødvnendig å implementere custom v-model, men var litt gøy -->
 <template>
     <input type="text" :value="localValue" @input="onInput"/>
 </template>
