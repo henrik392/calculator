@@ -1,8 +1,8 @@
 <template>
     <div class="calc-button-grid">
-        <button @click="">C</button>
-        <button @click="">ANS</button>
-        <button @click="">DEL</button>
+        <button @click="clear">C</button>
+        <button @click="ans">ANS</button>
+        <button @click="del">DEL</button>
         <button @click="addChar('+')">+</button>
         <button @click="addChar('1')">1</button>
         <button @click="addChar('2')">2</button>
@@ -22,13 +22,17 @@
         <button></button>
         <button @click="addChar('0')">0</button>
         <button @click="addChar('.')">.</button>
-        <button @click="">=</button>
+        <button @click="calculate">=</button>
     </div>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
+    clear: () => void
+    ans: () => void
+    del: () => void
     addChar: (char: string) => void
+    calculate: () => void
 }>()
 </script>
 
