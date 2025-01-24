@@ -1,7 +1,7 @@
 <template>
     <CalcInput v-model="currentInput" />
     <CalcButtonGrid :clear="clear" :ans="ans" :del="del" :addChar="addChar" :calculate="calculate" />
-    <History :history="history" />
+    <History @historyLog="(expression) => currentInput = expression" :history="history" />
 </template>
 
 <script setup lang="ts">

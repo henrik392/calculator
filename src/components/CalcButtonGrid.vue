@@ -19,10 +19,9 @@
         <button @click="addChar('9')">9</button>
         <button @click="addChar('/')">/</button>
 
-        <button></button>
-        <button @click="addChar('0')">0</button>
         <button @click="addChar('.')">.</button>
-        <button @click="calculate">=</button>
+        <button @click="addChar('0')">0</button>
+        <button class="equals-button" @click="calculate">=</button>
     </div>
 </template>
 
@@ -41,5 +40,9 @@ const props = defineProps<{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 5px;
+}
+
+.equals-button {
+    grid-column: span 2;
 }
 </style>

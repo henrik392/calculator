@@ -1,6 +1,6 @@
 <!-- Litt unødvnendig å implementere custom v-model, men var litt gøy -->
 <template>
-    <input type="text" :value="localValue" @input="onInput"/>
+    <input type="text" :value="localValue" @input="onInput" />
 </template>
 
 <script setup lang="ts">
@@ -27,7 +27,7 @@ const onInput = (event: Event) => {
         localValue.value = value;
         props['onUpdate:modelValue'](value);
     } else {
-            target.value = props.modelValue;
+        target.value = props.modelValue;
     }
 };
 
@@ -44,5 +44,6 @@ input {
     background-color: white;
     color: black;
     font-weight: bold;
+    margin-bottom: 20px;
 }
 </style>
