@@ -1,16 +1,34 @@
 {
-    "contact": [
-        {
-            "id": "0c51",
-            "name": "Henrik Kvamme",
-            "email": "henrik.halvorsen.kvamme@gmail.com",
-            "message": "Lol"
-        },
-        {
-            "id": "02cf",
-            "name": "Henrik Kvamme",
-            "email": "henrik.halvorsen.kvamme@gmail.com",
-            "message": "Wow that is amazing"
-        }
-    ]
+  "contact": [
+    {
+      "id": "0c51",
+      "name": "Henrik Kvamme",
+      "email": "henrik.halvorsen.kvamme@gmail.com",
+      "message": "Lol"
+    },
+    {
+      "id": "02cf",
+      "name": "Henrik Kvamme",
+      "email": "henrik.halvorsen.kvamme@gmail.com",
+      "message": "Wow that is amazing"
+    },
+    {
+      "id": "73dd",
+      "name": "Henrik Kvamme",
+      "email": "henrik.halvorsen.kvamme@gmail.com",
+      "message": "f"
+    },
+    {
+      "id": "68d9",
+      "name": "Henrik Kvamme",
+      "email": "henrik.halvorsen.kvamme@gmail.com",
+      "message": "f"
+    },
+    {
+      "id": "fbad",
+      "name": "Henrik Kvamme",
+      "email": "henrik.halvorsen.kvamme@gmail.com",
+      "message": "f"
+    }
+  ]
 }

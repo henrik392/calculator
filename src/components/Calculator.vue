@@ -1,5 +1,8 @@
 <template>
-    <CalcInput v-model="currentInput" />
+    <CalcInput
+        :modelValue="currentInput"
+        @update:modelValue="(value) => (currentInput = value)"
+    />
     <CalcButtonGrid
         :clear="clear"
         :ans="ans"
@@ -55,6 +58,7 @@ const calculate = () => {
             currentInput.value.replace(/ANS/g, getPreviousAnswer())
         );
         addToHistory(currentInput.value, result);
+        currentInput.value = result.toString();
     } catch (error) {
         currentInput.value = 'Err';
     }
@@ -63,6 +67,13 @@ const calculate = () => {
 const addChar = (char: string) => {
     currentInput.value += char;
 };
+
+// On enter, calculate the expression
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        calculate();
+    }
+});
 </script>
 
 <style scoped></style>

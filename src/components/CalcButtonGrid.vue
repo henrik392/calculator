@@ -21,7 +21,7 @@
 
         <button @click="addChar('.')">.</button>
         <button @click="addChar('0')">0</button>
-        <button class="equals-button" @click="calculate">=</button>
+        <button id="equals-button" @click="calculate">=</button>
     </div>
 </template>
 
@@ -42,7 +42,7 @@ const props = defineProps<{
     gap: 5px;
 }
 
-.equals-button {
+#equals-button {
     grid-column: span 2;
 }
 </style>
