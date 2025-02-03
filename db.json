@@ -1,5 +1,16 @@
 {
-    "submit": {
-        "message": "success"
-    }
+    "contact": [
+        {
+            "id": "0c51",
+            "name": "Henrik Kvamme",
+            "email": "henrik.halvorsen.kvamme@gmail.com",
+            "message": "Lol"
+        },
+        {
+            "id": "02cf",
+            "name": "Henrik Kvamme",
+            "email": "henrik.halvorsen.kvamme@gmail.com",
+            "message": "Wow that is amazing"
+        }
+    ]
 }

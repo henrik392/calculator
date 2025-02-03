@@ -39,6 +39,12 @@
             <button :disabled="!meta.valid || isSubmitting">
                 {{ isSubmitting ? 'Submitting...' : 'Submit' }}
             </button>
+
+            <StatusMessage
+                v-if="submissionStatus !== 'idle'"
+                :type="submissionStatus"
+                :message="serverMessage"
+            />
         </form>
     </div>
 </template>
@@ -47,7 +53,23 @@
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { useContactStore } from './stores/contact';
-import { watch } from 'vue';
+import { watch, ref } from 'vue';
+import StatusMessage from './components/StatusMessage.vue';
+
+interface Submission {
+    name: string;
+    email: string;
+    message: string;
+}
+
+interface ApiResponse {
+    status: 'success' | 'error';
+    message?: string;
+}
+
+// Status state
+const submissionStatus = ref<'idle' | 'loading' | 'success' | 'error'>('idle');
+const serverMessage = ref<string>('');
 
 const contactStore = useContactStore();
 
@@ -87,16 +109,39 @@ watch(message, (newMessage) => {
     contactStore.setMessage(newMessage);
 });
 
-const onSubmit = handleSubmit((values) => {
-    resetForm({
-        values: {
-            name: values.name,
-            email: values.email,
-            message: '',
-        },
-    });
+const onSubmit = handleSubmit(async (values: Submission) => {
+    submissionStatus.value = 'loading';
 
-    alert(JSON.stringify(values, null, 2));
+    try {
+        const response = await fetch('http://localhost:3000/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        });
+
+        const data: ApiResponse = await response.json();
+        console.log(data);
+
+        if (!response.ok) {
+            throw new Error(data.message);
+        }
+
+        submissionStatus.value = 'success';
+        serverMessage.value = data.message || 'Submission successful!';
+
+        resetForm({
+            values: {
+                name: values.name,
+                email: values.email,
+                message: '',
+            },
+        });
+    } catch (error) {
+        submissionStatus.value = 'error';
+        serverMessage.value = 'Submission failed!';
+    }
 });
 </script>
 
