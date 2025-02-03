@@ -1,11 +1,21 @@
-<script setup lang="ts">
-import Calculator from './components/Calculator.vue'
-</script>
-
 <template>
-  <h1>Calculator App</h1>
-  <Calculator />
+  <div id="app">
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/contact">Contact</router-link>
+    </nav>
+    <router-view />
+  </div>
 </template>
 
+<script setup lang="ts">
+</script>
+
 <style scoped>
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
 </style>
