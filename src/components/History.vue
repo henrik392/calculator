@@ -1,15 +1,22 @@
 <template>
-    <ul class="history" v-if="history.length" v-for="item in history.slice().reverse()" :key="item.id">
-        <li @click="emit('historyLog', item.expression)">{{ item.expression }} = {{ item.result }}</li>
+    <ul
+        class="history"
+        v-if="history.length"
+        v-for="item in history.slice().reverse()"
+        :key="item.id"
+    >
+        <li @click="emit('historyLog', item.expression)">
+            {{ item.expression }} = {{ item.result }}
+        </li>
     </ul>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-    history: { expression: string, result: string, id: number }[]
-}>()
+    history: { expression: string; result: string; id: number }[];
+}>();
 
-const emit = defineEmits(['historyLog'])
+const emit = defineEmits(['historyLog']);
 </script>
 
 <style scoped>

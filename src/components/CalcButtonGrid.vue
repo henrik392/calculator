@@ -27,12 +27,12 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-    clear: () => void
-    ans: () => void
-    del: () => void
-    addChar: (char: string) => void
-    calculate: () => void
-}>()
+    clear: () => void;
+    ans: () => void;
+    del: () => void;
+    addChar: (char: string) => void;
+    calculate: () => void;
+}>();
 </script>
 
 <style scoped>

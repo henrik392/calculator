@@ -32,9 +32,12 @@ const onInput = (event: Event) => {
 };
 
 // Sync localValue with modelValue when the parent updates modelValue
-watch(() => props.modelValue, (newValue) => {
-    localValue.value = newValue;
-});
+watch(
+    () => props.modelValue,
+    (newValue) => {
+        localValue.value = newValue;
+    }
+);
 </script>
 
 <style scoped>

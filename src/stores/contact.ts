@@ -1,16 +1,18 @@
 // State for contact page using Pinia, should store name and email
 
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
 export const useContactStore = defineStore('contact', {
-  state: () => ({
-    name: '',
-    email: ''
-  }),
-  actions: {
-    setContactInfo(name: string, email: string) {
-      this.name = name
-      this.email = email
-    }
-  }
+    state: () => ({
+        name: '',
+        email: '',
+    }),
+    actions: {
+        setName(name: string) {
+            this.name = name;
+        },
+        setEmail(email: string) {
+            this.email = email;
+        },
+    },
 });
