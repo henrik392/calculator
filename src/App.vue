@@ -8,9 +8,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
-console.log('App.vue setup script');
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 nav {
