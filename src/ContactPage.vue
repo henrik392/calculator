@@ -36,7 +36,7 @@
                 <span>{{ errors.message }}</span>
             </div>
 
-            <button>Submit</button>
+            <button :disabled="!meta.valid || isSubmitting">Submit</button>
         </form>
     </div>
 </template>
@@ -59,14 +59,15 @@ const schema = yup.object({
     message: yup.string().required('Message is required'),
 });
 
-const { defineField, errors, handleSubmit, resetForm } = useForm({
-    validationSchema: schema,
-    initialValues: {
-        name: contactStore.name,
-        email: contactStore.email,
-        message: '',
-    },
-});
+const { defineField, errors, handleSubmit, resetForm, meta, isSubmitting } =
+    useForm({
+        validationSchema: schema,
+        initialValues: {
+            name: contactStore.name,
+            email: contactStore.email,
+            message: contactStore.message,
+        },
+    });
 
 const [name, nameAttrs] = defineField('name');
 const [email, emailAttrs] = defineField('email');
@@ -105,5 +106,8 @@ const onSubmit = handleSubmit((values) => {
 .success-message {
     color: green;
     margin-top: 1rem;
+}
+.deactivated {
+    color: grey;
 }
 </style>
