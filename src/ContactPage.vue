@@ -1,9 +1,14 @@
 <template>
     <div class="contact-form">
-        <form @submit="onSubmit">
+        <form :validation-schema="schema" @submit="onSubmit">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <Field name="name" type="text" class="form-control" />
+                <field
+                    v-model="name"
+                    name="name"
+                    type="text"
+                    class="form-control"
+                />
                 <ErrorMessage name="name" class="error-message" />
             </div>
 
@@ -41,7 +46,7 @@
 
 <script setup lang="ts">
 import { useForm } from 'vee-validate';
-import { object, string } from 'yup';
+import * as yup from 'yup';
 import { useContactStore } from './stores/contact';
 import { ref } from 'vue';
 
@@ -49,50 +54,24 @@ const contactStore = useContactStore();
 const submissionStatus = ref<'idle' | 'pending' | 'success' | 'error'>('idle');
 
 // Validation schema
-const schema = object({
-    name: string().required('Name is required'),
-    email: string().required('Email is required').email('Valid email required'),
-    message: string().required('Message is required'),
+const schema = yup.object({
+    name: yup.string().required('Name is required'),
+    email: yup
+        .string()
+        .required('Email is required')
+        .email('Valid email required'),
+    message: yup.string().required('Message is required'),
 });
 
-const { handleSubmit, isSubmitting, resetForm } = useForm({
+const { defineField, errors, handleSubmit } = useForm({
     validationSchema: schema,
-    initialValues: {
-        name: contactStore.name,
-        email: contactStore.email,
-        message: '',
-    },
 });
 
-const onSubmit = handleSubmit(async (values) => {
-    submissionStatus.value = 'pending';
-    try {
-        // Mock API call - replace with your actual API endpoint
-        const response = await fetch('http://localhost:3000/submissions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
-        });
+const [email, emailAttrs] = defineField('email');
+const [password, passwordAttrs] = defineField('password');
 
-        if (response.ok) {
-            contactStore.setName(values.name);
-            contactStore.setEmail(values.email);
-            submissionStatus.value = 'success';
-            resetForm({
-                values: {
-                    name: values.name,
-                    email: values.email,
-                    message: '',
-                },
-            });
-        } else {
-            submissionStatus.value = 'error';
-        }
-    } catch (error) {
-        submissionStatus.value = 'error';
-    }
+const onSubmit = handleSubmit((values) => {
+    alert(JSON.stringify(values, null, 2));
 });
 </script>
 
