@@ -36,7 +36,9 @@
                 <span>{{ errors.message }}</span>
             </div>
 
-            <button :disabled="!meta.valid || isSubmitting">Submit</button>
+            <button :disabled="!meta.valid || isSubmitting">
+                {{ isSubmitting ? 'Submitting...' : 'Submit' }}
+            </button>
         </form>
     </div>
 </template>
@@ -107,7 +109,8 @@ const onSubmit = handleSubmit((values) => {
     color: green;
     margin-top: 1rem;
 }
-.deactivated {
-    color: grey;
+.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 </style>
