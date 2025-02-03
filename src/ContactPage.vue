@@ -3,43 +3,40 @@
         <form :validation-schema="schema" @submit="onSubmit">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <field
+                <input
                     v-model="name"
+                    v-bind="nameAttrs"
                     name="name"
                     type="text"
                     class="form-control"
                 />
-                <ErrorMessage name="name" class="error-message" />
+                <span>{{ errors.name }}</span>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <Field name="email" type="email" class="form-control" />
-                <ErrorMessage name="email" class="error-message" />
+                <input
+                    v-model="email"
+                    v-bind="emailAttrs"
+                    name="email"
+                    type="email"
+                    class="form-control"
+                />
+                <span>{{ errors.email }}</span>
             </div>
 
             <div class="form-group">
                 <label for="message">Message:</label>
-                <Field name="message" as="textarea" class="form-control" />
-                <ErrorMessage name="message" class="error-message" />
+                <textarea
+                    v-model="message"
+                    v-bind="messageAttrs"
+                    name="message"
+                    class="form-control"
+                />
+                <span>{{ errors.message }}</span>
             </div>
 
-            <button
-                type="submit"
-                :disabled="isSubmitting || submissionStatus === 'pending'"
-                class="submit-btn"
-            >
-                {{
-                    submissionStatus === 'pending' ? 'Submitting...' : 'Submit'
-                }}
-            </button>
-
-            <div v-if="submissionStatus === 'success'" class="success-message">
-                Thank you for your submission!
-            </div>
-            <div v-if="submissionStatus === 'error'" class="error-message">
-                Error submitting form. Please try again.
-            </div>
+            <button>Submit</button>
         </form>
     </div>
 </template>
@@ -48,10 +45,9 @@
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { useContactStore } from './stores/contact';
-import { ref } from 'vue';
+import { watch } from 'vue';
 
 const contactStore = useContactStore();
-const submissionStatus = ref<'idle' | 'pending' | 'success' | 'error'>('idle');
 
 // Validation schema
 const schema = yup.object({
@@ -63,14 +59,40 @@ const schema = yup.object({
     message: yup.string().required('Message is required'),
 });
 
-const { defineField, errors, handleSubmit } = useForm({
+const { defineField, errors, handleSubmit, resetForm } = useForm({
     validationSchema: schema,
+    initialValues: {
+        name: contactStore.name,
+        email: contactStore.email,
+        message: '',
+    },
 });
 
+const [name, nameAttrs] = defineField('name');
 const [email, emailAttrs] = defineField('email');
-const [password, passwordAttrs] = defineField('password');
+const [message, messageAttrs] = defineField('message');
+
+watch(name, (newName) => {
+    contactStore.setName(newName);
+});
+
+watch(email, (newEmail) => {
+    contactStore.setEmail(newEmail);
+});
+
+watch(message, (newMessage) => {
+    contactStore.setMessage(newMessage);
+});
 
 const onSubmit = handleSubmit((values) => {
+    resetForm({
+        values: {
+            name: values.name,
+            email: values.email,
+            message: '',
+        },
+    });
+
     alert(JSON.stringify(values, null, 2));
 });
 </script>

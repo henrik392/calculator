@@ -6,6 +6,7 @@ export const useContactStore = defineStore('contact', {
     state: () => ({
         name: '',
         email: '',
+        message: '',
     }),
     actions: {
         setName(name: string) {
@@ -13,6 +14,9 @@ export const useContactStore = defineStore('contact', {
         },
         setEmail(email: string) {
             this.email = email;
+        },
+        setMessage(message: string) {
+            this.message = message;
         },
     },
 });
