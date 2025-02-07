@@ -46,6 +46,7 @@
             v-if="submissionStatus !== 'idle'"
             :type="submissionStatus"
             :message="serverMessage"
+            data-test="status-message"
         />
     </form>
 </template>
