@@ -8,7 +8,7 @@
                 name="name"
                 type="text"
                 class="form-control"
-                id="name-input"
+                data-test="name-input"
             />
             <span>{{ errors.name }}</span>
         </div>
@@ -21,7 +21,7 @@
                 name="email"
                 type="email"
                 class="form-control"
-                id="email-input"
+                data-test="email-input"
             />
             <span>{{ errors.email }}</span>
         </div>
@@ -33,12 +33,12 @@
                 v-bind="messageAttrs"
                 name="message"
                 class="form-control"
-                id="message-input"
+                data-test="message-input"
             />
             <span>{{ errors.message }}</span>
         </div>
 
-        <button id="submit-button" :disabled="!meta.valid || isSubmitting">
+        <button :disabled="!meta.valid || isSubmitting" type="submit">
             {{ isSubmitting ? 'Submitting...' : 'Submit' }}
         </button>
 
@@ -54,7 +54,7 @@
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { useContactStore } from '@/stores/contact';
-import { watch, ref } from 'vue';
+import { watch, ref, computed } from 'vue';
 import StatusMessage from '@/components/StatusMessage.vue';
 
 interface Submission {
@@ -111,24 +111,28 @@ watch(message, (newMessage) => {
     contactStore.setMessage(newMessage);
 });
 
+const postValues = async (values: Submission) => {
+    const response = await fetch('http://localhost:3000/contact', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+        throw new Error('Submission failed');
+    }
+
+    const data: ApiResponse = await response.json();
+    return data; // return the response data for use
+};
+
 const onSubmit = handleSubmit(async (values: Submission) => {
     submissionStatus.value = 'loading';
 
     try {
-        const response = await fetch('http://localhost:3000/contact', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
-        });
-
-        const data: ApiResponse = await response.json();
-        console.log(data);
-
-        if (!response.ok) {
-            throw new Error(data.message);
-        }
+        const data = await postValues(values);
 
         submissionStatus.value = 'success';
         serverMessage.value = data.message || 'Submission successful!';
