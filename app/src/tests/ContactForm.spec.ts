@@ -1,16 +1,16 @@
-import { mount } from '@vue/test-utils';
+import { mount, flushPromises } from '@vue/test-utils';
 import ContactForm from '@/components/ContactForm.vue';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { describe, expect, it, beforeEach } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 
 // Add these lines
 // import { useContactStore } from '@/stores/contact';
 // import type { App } from 'vue';
 
-let pinia: ReturnType<typeof createPinia>;
 // let app: App;
 
 describe('ContactForm', async () => {
+    let pinia;
     beforeEach(() => {
         pinia = createPinia();
         setActivePinia(pinia);
@@ -35,5 +35,15 @@ describe('ContactForm', async () => {
         });
 
         expect(response.message).toBe(message);
+    });
+
+    it('submit button is deactived by default', async () => {
+        const wrapper = mount(ContactForm);
+        const button = wrapper.find('[data-test="submit-button"]');
+
+        await flushPromises();
+        await wrapper.vm.$nextTick();
+
+        expect(button).toHaveProperty('disabled', true);
     });
 });

@@ -38,7 +38,11 @@
             <span>{{ errors.message }}</span>
         </div>
 
-        <button :disabled="!meta.valid || isSubmitting" type="submit">
+        <button
+            :disabled="!meta.valid || isSubmitting"
+            type="submit"
+            data-test="submit-button"
+        >
             {{ isSubmitting ? 'Submitting...' : 'Submit' }}
         </button>
 
