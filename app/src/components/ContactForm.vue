@@ -1,5 +1,9 @@
 <template>
-    <form :validation-schema="schema" @submit="onSubmit">
+    <form
+        :validation-schema="schema"
+        @submit="onSubmit"
+        class="flex flex-col items-center justify-center gap-2 mt-10"
+    >
         <div class="form-group">
             <label for="name">Name:</label>
             <input
@@ -42,6 +46,7 @@
             :disabled="!meta.valid || isSubmitting"
             type="submit"
             data-test="submit-button"
+            class="px-4 py-2 font-bold text-white bg-blue-500 rounded cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
             {{ isSubmitting ? 'Submitting...' : 'Submit' }}
         </button>
@@ -168,5 +173,12 @@ const onSubmit = handleSubmit(async (values: Submission) => {
 .disabled {
     opacity: 0.7;
     cursor: not-allowed;
+}
+
+.form-control {
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
 }
 </style>

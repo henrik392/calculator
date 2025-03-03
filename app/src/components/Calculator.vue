@@ -1,6 +1,6 @@
 <template>
     <div
-        class="w-full max-w-[400px] mx-12 bg-[#E3DFDC] rounded-2xl relative px-6 py-8 border-6 border-gray-200"
+        class="w-full max-w-[400px] mx-12 bg-[#E3DFDC] rounded-2xl relative px-6 pt-8 pb-4 border-6 border-gray-200 mb-8"
     >
         <!--     Three retro flags with colors red yellow blue     -->
         <div class="absolute top-0 left-0 flex space-x-0.5 transform ml-8">
