@@ -19,10 +19,3 @@ data class HistoryItemDTO(
     val result: Double,
     val timestamp: LocalDateTime? = LocalDateTime.now()
 )
-
-data class HistoryRequest(
-    @field:Min(0)
-    val page: Int = 0,
-    @field:Min(1)
-    val size: Int = 10,
-)
