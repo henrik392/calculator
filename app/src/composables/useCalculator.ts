@@ -189,12 +189,6 @@ export function useCalculator() {
             del();
             return;
         }
-
-        // Allow adding numbers and operators with keyboard
-        const validKeys = /^[0-9+\-*/.]$/;
-        if (validKeys.test(event.key)) {
-            addChar(event.key);
-        }
     };
 
     // Lifecycle hooks

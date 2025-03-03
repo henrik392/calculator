@@ -15,17 +15,15 @@
         :history="history"
         :totalPages="totalPages"
         :pageNumber="pageNumber"
-        @update:pageNumber="
-            (newPage) => {
-                pageNumber = newPage;
-                fetchHistory();
-            }
-        "
+        @update:pageNumber="updatePageNumber"
     />
 </template>
 
 <script setup lang="ts">
 import { useCalculator } from '../composables/useCalculator';
+import CalcInput from './CalcInput.vue';
+import CalcButtonGrid from './CalcButtonGrid.vue';
+import History from './History.vue';
 
 const {
     currentInput,
@@ -48,9 +46,10 @@ const {
     setExpressionFromHistory,
 } = useCalculator();
 
-import CalcInput from './CalcInput.vue';
-import CalcButtonGrid from './CalcButtonGrid.vue';
-import History from './History.vue';
+const updatePageNumber = (newPage: number) => {
+    pageNumber.value = newPage;
+    fetchHistory();
+};
 
 fetchHistory();
 </script>
