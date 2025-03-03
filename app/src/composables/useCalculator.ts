@@ -1,27 +1,9 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import {
-    calculatorService,
-    type HistoryItem,
-} from '../services/calculatorService';
-import { API_CONFIG } from '../config/api';
+import { calculatorService } from '../services/calculatorService';
 
-export interface HistoryEntry {
-    expression: string;
-    result: string;
-    id: number;
-}
-
-/**
- * Calculator composable that handles calculator logic and state
- * Separates UI concerns from calculation and API logic
- */
 export function useCalculator() {
     // State
     const currentInput = ref('');
-    const history = ref<HistoryEntry[]>([]);
-    const pageNumber = ref(1);
-    const totalPages = ref(1);
-    const pageSize = API_CONFIG.DEFAULT_PAGE_SIZE;
     const error = ref<string | null>(null);
     const isLoading = ref(false);
     const lastAnswer = ref('0');
@@ -29,8 +11,6 @@ export function useCalculator() {
     // Computed values
     const hasError = computed(() => error.value !== null);
     const hasInput = computed(() => currentInput.value.trim().length > 0);
-    const canMoveNext = computed(() => pageNumber.value < totalPages.value);
-    const canMovePrevious = computed(() => pageNumber.value > 1);
 
     /**
      * Clear the input and error state
@@ -99,8 +79,8 @@ export function useCalculator() {
             // Update state
             lastAnswer.value = result.toString();
             currentInput.value = result.toString();
-            pageNumber.value = 1; // Reset to first page
-            await fetchHistory();
+            
+            return result;
         } catch (err) {
             error.value =
                 err instanceof Error
@@ -113,57 +93,9 @@ export function useCalculator() {
     };
 
     /**
-     * Fetch calculation history
+     * Set expression
      */
-    const fetchHistory = async () => {
-        isLoading.value = true;
-        error.value = null;
-
-        try {
-            // API uses zero-based paging
-            const { items, totalPages: pages } =
-                await calculatorService.fetchHistory(
-                    pageNumber.value - 1,
-                    pageSize
-                );
-
-            // Map API response to component model
-            history.value = items.map((item, index) => ({
-                expression: item.expression,
-                result: item.result,
-                id: index + 1,
-            }));
-
-            // Update state
-            totalPages.value = pages;
-
-            // Update last answer if history has items
-            if (items.length > 0 && !hasInput.value) {
-                lastAnswer.value = items[0].result;
-            }
-        } catch (err) {
-            error.value =
-                err instanceof Error ? err.message : 'Failed to load history';
-            console.error('History fetch error:', err);
-        } finally {
-            isLoading.value = false;
-        }
-    };
-
-    /**
-     * Set history page number and fetch history
-     */
-    const setHistoryPage = async (page: number) => {
-        if (page < 1 || page > totalPages.value) return;
-
-        pageNumber.value = page;
-        await fetchHistory();
-    };
-
-    /**
-     * Set expression from history item
-     */
-    const setExpressionFromHistory = (expression: string) => {
+    const setExpression = (expression: string) => {
         currentInput.value = expression;
         error.value = null;
     };
@@ -193,7 +125,6 @@ export function useCalculator() {
 
     // Lifecycle hooks
     onMounted(() => {
-        fetchHistory();
         window.addEventListener('keydown', handleKeydown);
     });
 
@@ -205,17 +136,13 @@ export function useCalculator() {
     return {
         // State
         currentInput,
-        history,
-        pageNumber,
-        totalPages,
         isLoading,
         error,
+        lastAnswer,
 
         // Computed
         hasError,
         hasInput,
-        canMoveNext,
-        canMovePrevious,
 
         // Methods
         clear,
@@ -223,8 +150,6 @@ export function useCalculator() {
         del,
         addChar,
         calculate,
-        fetchHistory,
-        setHistoryPage,
-        setExpressionFromHistory,
+        setExpression,
     };
 }

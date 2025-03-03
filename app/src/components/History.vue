@@ -3,23 +3,26 @@
         <ul
             class="history"
             v-if="history.length"
-            v-for="item in history.slice()"
+            v-for="item in history"
             :key="item.id"
         >
             <li @click="emit('historyLog', item.expression)">
                 {{ item.expression }} = {{ item.result }}
             </li>
         </ul>
-        <div class="page-controls">
+        <div v-else>No history available</div>
+
+        <div class="page-controls" v-if="totalPages > 1">
             <button
-                @click="$emit('update:pageNumber', props.pageNumber - 1)"
-                :disabled="isFirstPage"
+                @click="$emit('update:pageNumber', pageNumber - 1)"
+                :disabled="pageNumber === 1"
             >
                 Previous
             </button>
+            <span>Page {{ pageNumber }} of {{ totalPages }}</span>
             <button
-                @click="$emit('update:pageNumber', props.pageNumber + 1)"
-                :disabled="!hasNextPage"
+                @click="$emit('update:pageNumber', pageNumber + 1)"
+                :disabled="pageNumber >= totalPages"
             >
                 Next
             </button>
@@ -28,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps<{
     history: { expression: string; result: string; id: number }[];
@@ -37,14 +40,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['historyLog', 'update:pageNumber']);
-
-const updatePageNumber = (newPage: number) => {
-    emit('update:pageNumber', newPage);
-};
-
-const hasNextPage = computed(() => props.pageNumber < props.totalPages);
-
-const isFirstPage = computed(() => props.pageNumber === 1);
 </script>
 
 <style scoped>
