@@ -1,16 +1,21 @@
 <template>
     <div class="history-container">
-        <ul
-            class="history"
-            v-if="history.length"
-            v-for="item in history"
-            :key="item.id"
-        >
-            <li @click="emit('historyLog', item.expression)">
-                {{ item.expression }} = {{ item.result }}
-            </li>
-        </ul>
-        <div v-else>No history available</div>
+        <div class="bg-[#BFBFA1] border-black border-3 rounded-lg">
+            <ul
+                class=""
+                v-if="history.length"
+                v-for="item in history"
+                :key="item.id"
+            >
+                <li
+                    @click="emit('historyLog', item.expression)"
+                    class="h-8 font-bold w-full text-right text-lg px-4 text-black flex items-center justify-end border-b-[1px] border-dashed overflow-clip whitespace-nowrap"
+                >
+                    {{ item.expression }} = {{ item.result }}
+                </li>
+            </ul>
+            <div v-else>No history available</div>
+        </div>
 
         <div class="page-controls" v-if="totalPages > 1">
             <button
@@ -41,16 +46,3 @@ const props = defineProps<{
 
 const emit = defineEmits(['historyLog', 'update:pageNumber']);
 </script>
-
-<style scoped>
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    padding: 10px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-}
-</style>

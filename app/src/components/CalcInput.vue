@@ -5,7 +5,7 @@
         type="text"
         :value="localValue"
         @input="onInput"
-        class="bg-[#BFBFA1] h-12 font-bold w-full text-right text-2xl px-4 box-border border-black border-4 rounded-lg shadow-inner-top text-black"
+        class="bg-[#BFBFA1] h-12 font-bold w-full text-right text-2xl px-4 border-black border-4 rounded-lg shadow-inner-top text-black"
         placeholder="Enter expression"
     />
 </template>
