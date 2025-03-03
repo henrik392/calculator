@@ -3,12 +3,15 @@ package edu.ntnu.idi.idatt.server.service
 import org.springframework.stereotype.Service
 
 @Service
-class CalculateServiceImpl : CalculateService {
+class CalculateServiceImpl(
+    private val historyService: HistoryService,
+) : CalculateService {
     override fun calculate(input: String): Double {
-        val cleanInput = input.replace("\\s+".toRegex(), "").replace("\"", "");
-        val result = evaluateExpression(cleanInput);
+        val cleanInput = input.replace("\\s+".toRegex(), "").replace("\"", "")
+        val result = evaluateExpression(cleanInput)
 
         // Add to history
+        historyService.addHistory(cleanInput, result)
 
         return result;
     }
