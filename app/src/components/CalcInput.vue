@@ -5,6 +5,8 @@
         type="text"
         :value="localValue"
         @input="onInput"
+        class="bg-[#BFBFA1] h-12 font-bold w-full text-right text-2xl px-4 box-border border-black border-4 rounded-lg shadow-inner-top text-black"
+        placeholder="Enter expression"
     />
 </template>
 
@@ -46,12 +48,17 @@ watch(
 </script>
 
 <style scoped>
-input {
-    width: 100px;
-    height: 30px;
-    background-color: white;
-    color: black;
-    font-weight: bold;
-    margin-bottom: 20px;
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@900&display=swap');
+
+#calculator-input {
+    font-family: 'Doto', serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+    font-variation-settings: 'ROND' 0;
+}
+
+.shadow-inner-top {
+    box-shadow: inset 0 5px 5px rgba(81, 81, 81, 0.3);
 }
 </style>
