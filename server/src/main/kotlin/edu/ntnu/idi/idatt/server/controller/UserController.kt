@@ -34,7 +34,8 @@ class UserController(private val userService: UserService) {
             val user = userService.login(request.username, request.password)
             if (user == null) {
                 logger.info("Could not match username and password for user ${request.username}")
-                ResponseEntity.badRequest().body(UserResponse("", "", "Invalid username or password"))
+                ResponseEntity.badRequest()
+                    .body(UserResponse("", "", "Invalid username or password"))
             } else {
                 ResponseEntity.ok(UserResponse(user.username, user.email))
             }
@@ -43,4 +44,6 @@ class UserController(private val userService: UserService) {
             ResponseEntity.badRequest().body(UserResponse("", "", e.message))
         }
     }
+
+
 }

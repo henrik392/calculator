@@ -6,7 +6,11 @@ import org.springframework.stereotype.Service
 class CalculateServiceImpl : CalculateService {
     override fun calculate(input: String): Double {
         val cleanInput = input.replace("\\s+".toRegex(), "").replace("\"", "");
-        return evaluateExpression(cleanInput);
+        val result = evaluateExpression(cleanInput);
+
+        // Add to history
+
+        return result;
     }
 
     private fun evaluateExpression(expression: String): Double {
