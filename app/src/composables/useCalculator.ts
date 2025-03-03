@@ -79,7 +79,7 @@ export function useCalculator() {
             // Update state
             lastAnswer.value = result.toString();
             currentInput.value = result.toString();
-            
+
             return result;
         } catch (err) {
             error.value =
@@ -87,6 +87,7 @@ export function useCalculator() {
                     ? err.message
                     : 'An error occurred during calculation';
             console.error('Calculation error:', err);
+            currentInput.value = 'Err';
         } finally {
             isLoading.value = false;
         }
