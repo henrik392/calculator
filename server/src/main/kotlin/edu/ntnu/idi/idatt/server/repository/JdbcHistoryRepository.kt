@@ -34,7 +34,26 @@ class JdbcHistoryRepository(private val dataSource: DataSource) : HistoryReposit
                         )
                     }
 
-                    return Pair(history, history.size)
+                    return Pair(history, totalHistoryItems(userId))
+                }
+            }
+        }
+    }
+
+    private fun totalHistoryItems(userId: Long): Int {
+        dataSource.connection.use { conn ->
+            val sql = """
+                SELECT COUNT(*) FROM calculator_history
+                WHERE user_id = ?
+            """.trimIndent()
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setInt(1, userId.toInt())
+
+                stmt.executeQuery().use { rows ->
+                    if (!rows.next()) {
+                        throw RuntimeException("Failed to get total history items")
+                    }
+                    return rows.getInt(1)
                 }
             }
         }
