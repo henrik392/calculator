@@ -52,16 +52,43 @@ const addToHistory = (expression: string, result: string) => {
     history.value.push({ expression, result, id: history.value.length });
 };
 
-const calculate = () => {
+const calculate = async () => {
     try {
-        const result = eval(
+        const result = await evaluateExpression(
             currentInput.value.replace(/ANS/g, getPreviousAnswer())
         );
         addToHistory(currentInput.value, result);
         currentInput.value = result.toString();
     } catch (error) {
+        console.error(error);
         currentInput.value = 'Err';
     }
+};
+
+interface CalculationRequest {
+    expression: string;
+}
+
+interface CalculationResponse {
+    result: number;
+}
+
+const evaluateExpression = async (expression: string): Promise<number> => {
+    const request = JSON.stringify({ expression: expression });
+    const response = await fetch('http://localhost:8080/api/calculate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: request,
+    });
+
+    if (!response.ok) {
+        throw new Error('Calculation failed');
+    }
+
+    const data: CalculationResponse = await response.json();
+    return data.result;
 };
 
 const addChar = (char: string) => {
