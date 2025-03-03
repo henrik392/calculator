@@ -7,11 +7,8 @@ import org.springframework.stereotype.Service
 @Service
 class UserServiceImpl(private val userRepository: UserRepository) : UserService {
     override fun createUser(username: String, email: String, password: String): User {
-        // Validate input
-        if (username.isBlank() || email.isBlank() || password.isBlank()) {
-            throw IllegalArgumentException("Username, email and password cannot be blank")
-        }
-
+        // Input is already validated with jakarta.validation
+        // Check if user already exists
         if (userRepository.existsByUsername(username)) {
             throw IllegalArgumentException("User with username $username already exists")
         }
@@ -19,7 +16,11 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
         return userRepository.save(username, email, password)
     }
 
-    override fun signIn(username: String, password: String): User? {
-        TODO("Not yet implemented")
+    override fun login(username: String, password: String): User? {
+        if (username.isBlank() || password.isBlank()) {
+            throw IllegalArgumentException("Username and password cannot be blank")
+        }
+
+        return userRepository.login(username, password)
     }
 }

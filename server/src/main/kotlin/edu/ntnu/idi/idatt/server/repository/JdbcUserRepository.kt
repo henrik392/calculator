@@ -49,4 +49,26 @@ class JdbcUserRepository(private val dataSource: DataSource): UserRepository {
 
         return false
     }
+
+    override fun login(username: String, password: String): User? {
+        dataSource.connection.use { conn ->
+            val sql = "SELECT * FROM users WHERE username = ? AND password = ?"
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, username)
+                stmt.setString(2, password)
+                stmt.executeQuery().use { rows ->
+                    if (rows.next()) {
+                        return User(
+                            rows.getLong("id"),
+                            rows.getString("username"),
+                            rows.getString("email"),
+                            rows.getString("password")
+                        )
+                    }
+                }
+            }
+        }
+
+        return null
+    }
 }

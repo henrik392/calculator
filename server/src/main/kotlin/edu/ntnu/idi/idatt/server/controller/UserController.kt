@@ -1,8 +1,10 @@
 package edu.ntnu.idi.idatt.server.controller
 
 import edu.ntnu.idi.idatt.server.dto.CreateUserRequest
+import edu.ntnu.idi.idatt.server.dto.LoginRequest
 import edu.ntnu.idi.idatt.server.dto.UserResponse
 import edu.ntnu.idi.idatt.server.service.UserService
+import jakarta.validation.Valid
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,10 +21,26 @@ class UserController(private val userService: UserService) {
     fun createUser(@RequestBody request: CreateUserRequest): ResponseEntity<UserResponse> {
         return try {
             val user = userService.createUser(request.username, request.email, request.password)
-            ResponseEntity.ok(UserResponse(user.username, user.email, user.password))
+            ResponseEntity.ok(UserResponse(user.username, user.email))
         } catch (e: IllegalArgumentException) {
-            logger.error("Calculation error: ${e.message}")
-            ResponseEntity.badRequest().body(UserResponse("", "", "", e.message))
+            logger.error("Error creating user: ${e.message}")
+            ResponseEntity.badRequest().body(UserResponse("", "", e.message))
+        }
+    }
+
+    @PostMapping("/login")
+    fun login(@Valid @RequestBody request: LoginRequest): ResponseEntity<UserResponse> {
+        return try {
+            val user = userService.login(request.username, request.password)
+            if (user == null) {
+                logger.info("Could not match username and password for user ${request.username}")
+                ResponseEntity.badRequest().body(UserResponse("", "", "Invalid username or password"))
+            } else {
+                ResponseEntity.ok(UserResponse(user.username, user.email))
+            }
+        } catch (e: IllegalArgumentException) {
+            logger.error("Error logging in user: ${e.message}")
+            ResponseEntity.badRequest().body(UserResponse("", "", e.message))
         }
     }
 }
