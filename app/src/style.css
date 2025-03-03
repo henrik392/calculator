@@ -1,7 +1,15 @@
 @import 'tailwindcss';
 
+.doto-calculator {
+    font-family: 'Doto', serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    font-style: normal;
+    font-variation-settings: 'ROND' 0;
+}
+
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: Doto, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
 

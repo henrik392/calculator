@@ -1,31 +1,36 @@
 <template>
-    <div class="calc-button-grid">
-        <button @click="clear">C</button>
-        <button @click="ans">ANS</button>
-        <button @click="del">DEL</button>
-        <button @click="addChar('+')">+</button>
-        <button @click="addChar('1')">1</button>
-        <button @click="addChar('2')">2</button>
-        <button @click="addChar('3')">3</button>
-        <button @click="addChar('-')">-</button>
+    <div class="grid grid-cols-4 gap-5 text-black">
+        <CalcButton :onClick="clear">C</CalcButton>
+        <CalcButton :onClick="ans">ANS</CalcButton>
+        <CalcButton :onClick="del">DEL</CalcButton>
+        <CalcButton :onClick="() => addChar('+')">+</CalcButton>
+        <CalcButton :onClick="() => addChar('1')">1</CalcButton>
+        <CalcButton :onClick="() => addChar('2')">2</CalcButton>
+        <CalcButton :onClick="() => addChar('3')">3</CalcButton>
+        <CalcButton :onClick="() => addChar('-')">-</CalcButton>
 
-        <button @click="addChar('4')">4</button>
-        <button @click="addChar('5')">5</button>
-        <button @click="addChar('6')">6</button>
-        <button @click="addChar('*')">*</button>
+        <CalcButton :onClick="() => addChar('4')">4</CalcButton>
+        <CalcButton :onClick="() => addChar('5')">5</CalcButton>
+        <CalcButton :onClick="() => addChar('6')">6</CalcButton>
+        <CalcButton :onClick="() => addChar('*')">*</CalcButton>
 
-        <button @click="addChar('7')">7</button>
-        <button @click="addChar('8')">8</button>
-        <button @click="addChar('9')">9</button>
-        <button @click="addChar('/')">/</button>
+        <CalcButton :onClick="() => addChar('7')">7</CalcButton>
+        <CalcButton :onClick="() => addChar('8')">8</CalcButton>
+        <CalcButton :onClick="() => addChar('9')">9</CalcButton>
+        <CalcButton :onClick="() => addChar('/')">/</CalcButton>
 
-        <button @click="addChar('.')">.</button>
-        <button @click="addChar('0')">0</button>
-        <button id="equals-button" @click="calculate">=</button>
+        <CalcButton :onClick="() => addChar('.')">.</CalcButton>
+        <CalcButton :onClick="() => addChar('0')">0</CalcButton>
+        <CalcButton class="bg-blue-500 col-span-2" :onClick="calculate"
+            >=</CalcButton
+        >
     </div>
 </template>
 
 <script setup lang="ts">
+import CalcButton from './CalcButton.vue';
+import { defineProps } from 'vue';
+
 const props = defineProps<{
     clear: () => void;
     ans: () => void;
@@ -36,12 +41,6 @@ const props = defineProps<{
 </script>
 
 <style scoped>
-.calc-button-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
-}
-
 #equals-button {
     grid-column: span 2;
 }

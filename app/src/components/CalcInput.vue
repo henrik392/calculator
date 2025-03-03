@@ -51,6 +51,10 @@ watch(
 @import url('https://fonts.googleapis.com/css2?family=Doto:wght@900&display=swap');
 
 #calculator-input {
+    font-family: 'Doto';
+}
+
+.doto-calculator {
     font-family: 'Doto', serif;
     font-optical-sizing: auto;
     font-weight: 900;
