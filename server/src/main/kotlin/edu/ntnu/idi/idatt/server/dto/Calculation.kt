@@ -7,4 +7,4 @@ data class CalculationRequest(
     val expression: String
 )
 
-data class CalculationResponse(val result: Double, val error: String? = null)
+data class CalculationResponse(val result: Double, val error: String? = null, val status: Int = 200)

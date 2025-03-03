@@ -11,7 +11,10 @@ data class CreateUserRequest(
     val email: String,
 
     @field:NotBlank(message = "Password cannot be empty")
-    @field:jakarta.validation.constraints.Size(min = 8, message = "Password must be at least 8 characters")
+    @field:jakarta.validation.constraints.Size(
+        min = 8,
+        message = "Password must be at least 8 characters"
+    )
     val password: String
 )
 
@@ -27,5 +30,6 @@ data class UserResponse(
     val username: String,
     val email: String,
     val error: String? = null,
-    val success: Boolean = error == null
+    val success: Boolean = error == null,
+    val status: Int = 200,
 )
