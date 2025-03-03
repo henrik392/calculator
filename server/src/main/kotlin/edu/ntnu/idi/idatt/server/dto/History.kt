@@ -10,7 +10,8 @@ data class PaginatedResponse<T>(
     val totalElements: Int,
     val totalPages: Int,
     val isLast: Boolean,
-    val message: String? = null
+    val message: String? = null,
+    val status: Int = 200
 )
 
 data class HistoryItemDTO(
@@ -24,5 +25,4 @@ data class HistoryRequest(
     val page: Int = 0,
     @field:Min(1)
     val size: Int = 10,
-    val status: Int = 200,
 )

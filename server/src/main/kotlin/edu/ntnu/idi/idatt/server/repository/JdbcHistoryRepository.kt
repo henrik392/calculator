@@ -9,9 +9,9 @@ class JdbcHistoryRepository(private val dataSource: DataSource) : HistoryReposit
     override fun getHistory(userId: Long, page: Int, size: Int): Pair<List<HistoryItem>, Int> {
         dataSource.connection.use { conn ->
             val sql = """
-                SELECT * FROM HistoryItem
-                WHERE userId = ?
-                ORDER BY timestamp DESC
+                SELECT * FROM calculator_history
+                WHERE user_id = ?
+                ORDER BY created_at DESC
                 LIMIT ?
                 OFFSET ?
             """.trimIndent()
@@ -28,8 +28,8 @@ class JdbcHistoryRepository(private val dataSource: DataSource) : HistoryReposit
                                 rows.getLong("id"),
                                 rows.getString("expression"),
                                 rows.getDouble("result"),
-                                rows.getTimestamp("timestamp").toLocalDateTime(),
-                                rows.getLong("userId")
+                                rows.getTimestamp("created_at").toLocalDateTime(),
+                                rows.getLong("user_id")
                             )
                         )
                     }
@@ -43,7 +43,7 @@ class JdbcHistoryRepository(private val dataSource: DataSource) : HistoryReposit
     override fun addHistory(userId: Long, expression: String, result: Double) {
         dataSource.connection.use { conn ->
             val sql = """
-                INSERT INTO HistoryItem (expression, result, userId)
+                INSERT INTO calculator_history (expression, result, user_id)
                 VALUES (?, ?, ?)
             """.trimIndent()
             conn.prepareStatement(sql).use { stmt ->

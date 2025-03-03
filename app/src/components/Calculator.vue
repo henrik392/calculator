@@ -12,6 +12,8 @@
     />
     <History
         @historyLog="(expression) => (currentInput = expression)"
+        :pageNumber="pageNumber"
+        @update:pageNumber="(newPage) => (pageNumber = newPage)"
         :history="history"
     />
 </template>
@@ -21,6 +23,9 @@ import { ref } from 'vue';
 import CalcInput from './CalcInput.vue';
 import CalcButtonGrid from './CalcButtonGrid.vue';
 import History from './History.vue';
+
+const pageNumber = ref(1);
+const pageSize = 10;
 
 const history = ref<{ expression: string; result: string; id: number }[]>([]);
 
@@ -45,11 +50,8 @@ const del = () => {
 };
 
 const getPreviousAnswer = () => {
-    return history.value[history.value.length - 1]?.result || '0';
-};
-
-const addToHistory = (expression: string, result: string) => {
-    history.value.push({ expression, result, id: history.value.length });
+    // return history.value[history.value.length - 1]?.result || '0';
+    return '0';
 };
 
 const calculate = async () => {
@@ -57,11 +59,62 @@ const calculate = async () => {
         const result = await evaluateExpression(
             currentInput.value.replace(/ANS/g, getPreviousAnswer())
         );
-        addToHistory(currentInput.value, result);
         currentInput.value = result.toString();
+        fetchHistory();
     } catch (error) {
         console.error(error);
         currentInput.value = 'Err';
+    }
+};
+
+interface PaginatedResponse<T> {
+    content: T[];
+    pageNumber: number;
+    pageSize: number;
+    totalElements: number;
+    totalPages: number;
+    isLast: boolean;
+    message?: string;
+}
+
+interface HistoryItem {
+    expression: string;
+    result: string;
+    timestamp: string;
+}
+
+interface HistoryRequest {
+    page: number;
+    size: number;
+    status: number;
+}
+
+const fetchHistory = async () => {
+    try {
+        const url = new URL('http://localhost:8080/api/history');
+        url.searchParams.append('page', (pageNumber.value - 1).toString());
+        url.searchParams.append('size', pageSize.toString());
+        url.searchParams.append('status', '1');
+
+        const response = await fetch(url.toString());
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch history');
+        }
+
+        const historyData: PaginatedResponse<HistoryItem> =
+            await response.json();
+
+        let id = 1;
+        history.value = historyData.content.map((item) => ({
+            expression: item.expression,
+            result: item.result,
+            id: id++,
+        }));
+
+        console.log('History fetched successfully:', history.value);
+    } catch (error) {
+        console.error(error);
     }
 };
 
