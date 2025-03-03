@@ -7,10 +7,12 @@ import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/history")
+@Validated
 class HistoryController(private val historyService: HistoryService) {
     private val logger = LoggerFactory.getLogger(HistoryController::class.java)
 

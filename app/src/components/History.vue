@@ -3,7 +3,7 @@
         <ul
             class="history"
             v-if="history.length"
-            v-for="item in history.slice().reverse()"
+            v-for="item in history.slice()"
             :key="item.id"
         >
             <li @click="emit('historyLog', item.expression)">
@@ -28,12 +28,23 @@
 </template>
 
 <script setup lang="ts">
+import { computed, defineProps, defineEmits } from 'vue';
+
 const props = defineProps<{
     history: { expression: string; result: string; id: number }[];
     pageNumber: number;
+    totalPages: number;
 }>();
 
-const emit = defineEmits(['historyLog']);
+const emit = defineEmits(['historyLog', 'update:pageNumber']);
+
+const updatePageNumber = (newPage: number) => {
+    emit('update:pageNumber', newPage);
+};
+
+const hasNextPage = computed(() => pageNumber < totalPages);
+
+const isFirstPage = computed(() => pageNumber === 1);
 </script>
 
 <style scoped>

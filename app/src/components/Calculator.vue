@@ -13,7 +13,13 @@
     <History
         @historyLog="(expression) => (currentInput = expression)"
         :pageNumber="pageNumber"
-        @update:pageNumber="(newPage) => (pageNumber = newPage)"
+        :totalPages="totalPages"
+        @update:pageNumber="
+            (newPage) => {
+                pageNumber = newPage;
+                fetchHistory();
+            }
+        "
         :history="history"
     />
 </template>
@@ -25,7 +31,8 @@ import CalcButtonGrid from './CalcButtonGrid.vue';
 import History from './History.vue';
 
 const pageNumber = ref(1);
-const pageSize = 10;
+const totalPages = ref(1);
+const pageSize = 5;
 
 const history = ref<{ expression: string; result: string; id: number }[]>([]);
 
@@ -60,7 +67,8 @@ const calculate = async () => {
             currentInput.value.replace(/ANS/g, getPreviousAnswer())
         );
         currentInput.value = result.toString();
-        fetchHistory();
+        pageNumber.value = 1;
+        await fetchHistory();
     } catch (error) {
         console.error(error);
         currentInput.value = 'Err';
@@ -69,6 +77,7 @@ const calculate = async () => {
 
 interface PaginatedResponse<T> {
     content: T[];
+    // Zero-indexed
     pageNumber: number;
     pageSize: number;
     totalElements: number;
@@ -86,7 +95,6 @@ interface HistoryItem {
 interface HistoryRequest {
     page: number;
     size: number;
-    status: number;
 }
 
 const fetchHistory = async () => {
@@ -94,7 +102,6 @@ const fetchHistory = async () => {
         const url = new URL('http://localhost:8080/api/history');
         url.searchParams.append('page', (pageNumber.value - 1).toString());
         url.searchParams.append('size', pageSize.toString());
-        url.searchParams.append('status', '1');
 
         const response = await fetch(url.toString());
 
@@ -112,6 +119,7 @@ const fetchHistory = async () => {
             id: id++,
         }));
 
+        totalPages.value = historyData.totalPages;
         console.log('History fetched successfully:', history.value);
     } catch (error) {
         console.error(error);
@@ -147,6 +155,8 @@ const evaluateExpression = async (expression: string): Promise<number> => {
 const addChar = (char: string) => {
     currentInput.value += char;
 };
+
+fetchHistory();
 
 // On enter, calculate the expression
 window.addEventListener('keydown', (event) => {
