@@ -24,9 +24,9 @@ class HistoryController(private val historyService: HistoryService) {
         size: Int
     ): ResponseEntity<PaginatedResponse<HistoryItemDTO>> {
         return try {
-            logger.info("Fetching history for page ${request.page} with size ${request.size}")
+            logger.info("Fetching history for page $page with size $size")
 
-            val history = historyService.getHistory(request.page, request.size)
+            val history = historyService.getHistory(page, size)
             ResponseEntity.ok(history)
         } catch (e: IllegalArgumentException) {
             logger.error("Error fetching history: ${e.message}")
