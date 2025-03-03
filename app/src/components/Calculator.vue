@@ -12,15 +12,15 @@
     />
     <History
         @historyLog="(expression) => (currentInput = expression)"
-        :pageNumber="pageNumber"
+        :history="history"
         :totalPages="totalPages"
+        :pageNumber="pageNumber"
         @update:pageNumber="
             (newPage) => {
                 pageNumber = newPage;
                 fetchHistory();
             }
         "
-        :history="history"
     />
 </template>
 
@@ -57,8 +57,7 @@ const del = () => {
 };
 
 const getPreviousAnswer = () => {
-    // return history.value[history.value.length - 1]?.result || '0';
-    return '0';
+    return history.value[0]?.result || '0';
 };
 
 const calculate = async () => {

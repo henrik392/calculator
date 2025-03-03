@@ -12,14 +12,14 @@
         </ul>
         <div class="page-controls">
             <button
-                @click="$emit('update:pageNumber', pageNumber - 1)"
-                :disabled="pageNumber === 1"
+                @click="$emit('update:pageNumber', props.pageNumber - 1)"
+                :disabled="isFirstPage"
             >
                 Previous
             </button>
             <button
-                @click="$emit('update:pageNumber', pageNumber + 1)"
-                :disabled="pageNumber * pageSize >= history.length"
+                @click="$emit('update:pageNumber', props.pageNumber + 1)"
+                :disabled="!hasNextPage"
             >
                 Next
             </button>
@@ -42,9 +42,9 @@ const updatePageNumber = (newPage: number) => {
     emit('update:pageNumber', newPage);
 };
 
-const hasNextPage = computed(() => pageNumber < totalPages);
+const hasNextPage = computed(() => props.pageNumber < props.totalPages);
 
-const isFirstPage = computed(() => pageNumber === 1);
+const isFirstPage = computed(() => props.pageNumber === 1);
 </script>
 
 <style scoped>
