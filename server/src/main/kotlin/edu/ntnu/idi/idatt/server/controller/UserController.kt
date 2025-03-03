@@ -25,6 +25,4 @@ class UserController(private val userService: UserService) {
             ResponseEntity.badRequest().body(UserResponse("", "", "", e.message))
         }
     }
-
-    
 }
