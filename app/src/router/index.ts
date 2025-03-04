@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '../HomePage.vue'; // Replace with your actual home component
-import ContactPage from '../ContactPage.vue'; // Replace with your new contact form
+import HomePage from '../HomePage.vue';
+import ContactPage from '../ContactPage.vue';
+import LoginPage from '../LoginPage.vue';
 
 const routes = [
     { path: '/', component: HomePage, name: 'home' },
+    { path: '/home', redirect: '/' },
+    { path: '/login', component: LoginPage, name: 'login' },
     { path: '/contact', component: ContactPage, name: 'contact' },
 ];
 

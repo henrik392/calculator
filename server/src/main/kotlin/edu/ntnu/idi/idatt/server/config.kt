@@ -1,5 +1,6 @@
 package edu.ntnu.idi.idatt.server
 
+import edu.ntnu.idi.idatt.server.security.JwtTokenUtil
 import edu.ntnu.idi.idatt.server.service.UserContextService
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -19,7 +20,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(private val jwtTokenUtil: JwtTokenUtil) {
+
+    @Bean
+    fun jwtAuthenticationFitler(): JwtAuthenticationFilter {
+        return JwtAuthenticationFilter(jwtTokenUtil)
+    }
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {

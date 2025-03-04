@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <nav class="my-4">
+            <router-link to="/login">login</router-link>
             <router-link to="/">Home</router-link>
             <router-link to="/contact">Contact</router-link>
         </nav>
