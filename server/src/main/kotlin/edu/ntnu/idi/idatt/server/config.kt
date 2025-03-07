@@ -20,16 +20,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig(private val jwtTokenUtil: JwtTokenUtil) {
+class SecurityConfig() {
 
-    @Bean
-    fun jwtAuthenticationFitler(): JwtAuthenticationFilter {
-        return JwtAuthenticationFilter(jwtTokenUtil)
-    }
+//    @Bean
+//    fun jwtAuthenticationFitler(): JwtAuthenticationFilter {
+//        return JwtAuthenticationFilter(jwtTokenUtil)
+//    }
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
+            .httpBasic {}
             .csrf { it.disable() }
             .authorizeHttpRequests { authorize ->
                 authorize.anyRequest().permitAll()
