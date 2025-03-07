@@ -6,7 +6,7 @@ import java.sql.Statement
 import javax.sql.DataSource
 
 @Repository
-class JdbcUserRepository(private val dataSource: DataSource): UserRepository {
+class JdbcUserRepository(private val dataSource: DataSource) : UserRepository {
 
     override fun save(username: String, email: String, password: String): User {
         dataSource.connection.use { conn ->
@@ -48,6 +48,48 @@ class JdbcUserRepository(private val dataSource: DataSource): UserRepository {
         }
 
         return false
+    }
+
+    override fun findByUsername(username: String): User? {
+        dataSource.connection.use { conn ->
+            val sql = "SELECT * FROM users WHERE username = ?"
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setString(1, username)
+                stmt.executeQuery().use { rows ->
+                    if (rows.next()) {
+                        return User(
+                            rows.getLong("id"),
+                            rows.getString("username"),
+                            rows.getString("email"),
+                            rows.getString("password")
+                        )
+                    }
+                }
+            }
+        }
+
+        return null
+    }
+
+    override fun findByUserId(userId: Long): User? {
+        dataSource.connection.use { conn ->
+            val sql = "SELECT * FROM users WHERE id = ?"
+            conn.prepareStatement(sql).use { stmt ->
+                stmt.setLong(1, userId)
+                stmt.executeQuery().use { rows ->
+                    if (rows.next()) {
+                        return User(
+                            rows.getLong("id"),
+                            rows.getString("username"),
+                            rows.getString("email"),
+                            rows.getString("password")
+                        )
+                    }
+                }
+            }
+        }
+
+        return null
     }
 
     override fun login(username: String, password: String): User? {
