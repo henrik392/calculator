@@ -22,7 +22,9 @@ class SecurityConfiguration(
     @Bean
     @Throws(Exception::class)
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http.csrf {}
+        http.csrf {
+            it.disable()
+        }
             .authorizeHttpRequests { authorize ->
                 authorize.requestMatchers("/auth/**").permitAll()
                 authorize.anyRequest().authenticated()
