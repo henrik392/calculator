@@ -39,6 +39,10 @@ class JwtService {
         return username == extractUsernameFromToken(token) && !isTokenExpired(token)
     }
 
+    fun getExpirationTime(): Long {
+        return expiration
+    }
+
     private fun isTokenExpired(token: String): Boolean {
         val expirationDate = getAllClaimsFromToken(token).expiration
         val now = Date()

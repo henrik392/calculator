@@ -33,3 +33,10 @@ data class UserResponse(
     val success: Boolean = error == null,
     val status: Int = 200,
 )
+
+data class LoginResponse(
+    val token: String,
+    val expiresIn: Long,
+    val error: String? = null,
+    val status: Int = 200,
+)

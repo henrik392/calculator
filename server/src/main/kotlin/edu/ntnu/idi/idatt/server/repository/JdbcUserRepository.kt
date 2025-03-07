@@ -8,7 +8,10 @@ import javax.sql.DataSource
 @Repository
 class JdbcUserRepository(private val dataSource: DataSource) : UserRepository {
 
-    override fun save(username: String, email: String, password: String): User {
+    override fun save(user: User): User {
+        val username = user.username
+        val email = user.email
+        val password = user.password
         dataSource.connection.use { conn ->
             val sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)"
             conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS).use { stmt ->
