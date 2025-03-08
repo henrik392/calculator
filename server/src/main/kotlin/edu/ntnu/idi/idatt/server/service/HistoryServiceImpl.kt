@@ -12,7 +12,7 @@ class HistoryServiceImpl(
     private val userContextService: UserContextService
 ) : HistoryService {
     override fun getHistory(page: Int, size: Int): PaginatedResponse<HistoryItemDTO> {
-        val userId = userContextService.getCurrentUserId()
+        val userId = userContextService.getCurrentUsername()
         val (items, totalCount) = historyRepository.getHistory(userId, page, size)
 
         val dtos = items.map { it.toDTO() }
@@ -30,7 +30,7 @@ class HistoryServiceImpl(
     }
 
     override fun addHistory(expression: String, result: Double) {
-        val userId = userContextService.getCurrentUserId()
+        val userId = userContextService.getCurrentUsername()
         historyRepository.addHistory(userId, expression, result)
     }
 
