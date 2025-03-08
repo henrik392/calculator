@@ -22,7 +22,7 @@ class AuthenticationServiceImpl(
             throw IllegalArgumentException("User with username $username already exists")
         }
 
-        val user: User = User(0, username, email, passwordEncoder.encode(password))
+        val user = User(username, email, passwordEncoder.encode(password))
 
         return userRepository.save(user)
     }

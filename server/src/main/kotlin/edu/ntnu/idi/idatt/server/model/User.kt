@@ -5,7 +5,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class User(
-    val id: Long,
     private val username: String,
     val email: String,
     private val password: String

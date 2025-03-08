@@ -27,8 +27,7 @@ class JdbcUserRepository(private val dataSource: DataSource) : UserRepository {
 
                 stmt.generatedKeys.use { keys ->
                     if (keys.next()) {
-                        val id = keys.getLong(1)
-                        return User(id, username, email, password)
+                        return User(username, email, password)
                     } else {
                         throw RuntimeException("Creating user failed, no ID obtained.")
                     }
@@ -61,7 +60,6 @@ class JdbcUserRepository(private val dataSource: DataSource) : UserRepository {
                 stmt.executeQuery().use { rows ->
                     if (rows.next()) {
                         return User(
-                            rows.getLong("id"),
                             rows.getString("username"),
                             rows.getString("email"),
                             rows.getString("password")
