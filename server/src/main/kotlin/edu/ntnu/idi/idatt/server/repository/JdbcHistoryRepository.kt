@@ -44,7 +44,7 @@ class JdbcHistoryRepository(private val dataSource: DataSource) : HistoryReposit
         dataSource.connection.use { conn ->
             val sql = """
                 SELECT COUNT(*) FROM calculator_history
-                WHERE user_id = ?
+                WHERE username = ?
             """.trimIndent()
             conn.prepareStatement(sql).use { stmt ->
                 stmt.setString(1, username)
@@ -62,7 +62,7 @@ class JdbcHistoryRepository(private val dataSource: DataSource) : HistoryReposit
     override fun addHistory(username: String, expression: String, result: Double) {
         dataSource.connection.use { conn ->
             val sql = """
-                INSERT INTO calculator_history (expression, result, user_id)
+                INSERT INTO calculator_history (expression, result, username)
                 VALUES (?, ?, ?)
             """.trimIndent()
             conn.prepareStatement(sql).use { stmt ->
