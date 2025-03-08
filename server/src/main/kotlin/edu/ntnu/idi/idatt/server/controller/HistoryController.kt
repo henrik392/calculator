@@ -33,7 +33,7 @@ class HistoryController(private val historyService: HistoryService) {
         } catch (e: IllegalArgumentException) {
             logger.error("Error fetching history: ${e.message}")
             ResponseEntity.badRequest()
-                .body(PaginatedResponse(listOf(), 0, 0, 0, 0, false, e.message))
+                .body(PaginatedResponse(listOf(), 0, 0, 0, false, e.message))
         }
     }
 }

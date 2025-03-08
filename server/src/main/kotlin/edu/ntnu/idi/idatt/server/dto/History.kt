@@ -7,7 +7,6 @@ data class PaginatedResponse<T>(
     val content: List<T>,
     val pageNumber: Int,
     val pageSize: Int,
-    val totalElements: Int,
     val totalPages: Int,
     val isLast: Boolean,
     val message: String? = null,

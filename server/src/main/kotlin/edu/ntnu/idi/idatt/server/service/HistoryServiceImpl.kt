@@ -13,17 +13,16 @@ class HistoryServiceImpl(
 ) : HistoryService {
     override fun getHistory(page: Int, size: Int): PaginatedResponse<HistoryItemDTO> {
         val username = userContextService.getCurrentUsername()
-        val (items, totalCount) = historyRepository.getHistory(username, page, size)
+        val (items, totalElements) = historyRepository.getHistory(username, page, size)
 
         val dtos = items.map { it.toDTO() }
-        val totalPages = (totalCount + size - 1) / size
+        val totalPages = (totalElements + size - 1) / size
         val isLast = page >= totalPages - 1
 
         return PaginatedResponse(
             content = dtos,
             pageNumber = page,
             pageSize = size,
-            totalElements = totalCount,
             totalPages = totalPages,
             isLast = isLast
         )
