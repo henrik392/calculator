@@ -29,7 +29,7 @@ class JdbcHistoryRepository(private val dataSource: DataSource) : HistoryReposit
                                 rows.getString("expression"),
                                 rows.getDouble("result"),
                                 rows.getTimestamp("created_at").toLocalDateTime(),
-                                rows.getLong("user_id")
+                                rows.getString("username")
                             )
                         )
                     }

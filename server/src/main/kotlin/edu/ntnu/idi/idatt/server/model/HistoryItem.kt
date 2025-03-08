@@ -7,5 +7,5 @@ data class HistoryItem(
     val expression: String,
     val result: Double,
     val createdAt: LocalDateTime,
-    val userId: Long,
+    val username: String,
 )
