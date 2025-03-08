@@ -29,12 +29,6 @@ data class LoginRequest(
 data class UserResponse(
     val username: String,
     val email: String,
-    val error: String? = null,
-    val success: Boolean = error == null,
-    val status: Int = 200,
-)
-
-data class LoginResponse(
     val token: String,
     val expiresIn: Long,
     val error: String? = null,

@@ -56,6 +56,7 @@ class JwtAuthenticationFilter(
 
             filterChain.doFilter(request, response)
         } catch (exception: Exception) {
+            logger.error("Error occurred while processing JWT token: ${exception.message}")
             handlerExceptionResolver.resolveException(request, response, null, exception)
         }
     }

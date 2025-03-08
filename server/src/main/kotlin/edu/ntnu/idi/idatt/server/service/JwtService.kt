@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.*
@@ -26,7 +27,7 @@ class JwtService {
             .subject(username)
             .issuedAt(Date(now))
             .expiration(Date(expirationTime))
-            .signWith(Keys.hmacShaKeyFor(secret?.toByteArray()))
+            .signWith(getSignInKey())
             .compact()
     }
 
