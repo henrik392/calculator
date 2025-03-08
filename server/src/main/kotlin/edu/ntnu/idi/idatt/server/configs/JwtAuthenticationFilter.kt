@@ -1,6 +1,7 @@
 package edu.ntnu.idi.idatt.server.configs
 
 import edu.ntnu.idi.idatt.server.security.JwtService
+import edu.ntnu.idi.idatt.server.service.UserContextService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -18,7 +19,8 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 class JwtAuthenticationFilter(
     private val jwtService: JwtService,
     private val userDetailsService: UserDetailsService,
-    private val handlerExceptionResolver: HandlerExceptionResolver
+    private val handlerExceptionResolver: HandlerExceptionResolver,
+    private val userContextService: UserContextService
 ) :
     OncePerRequestFilter() {
     override fun doFilterInternal(
@@ -43,6 +45,8 @@ class JwtAuthenticationFilter(
                 val userDetails = userDetailsService.loadUserByUsername(username)
 
                 if (jwtService.isTokenValid(jwt, userDetails.username)) {
+                    // Set context only after token is validated
+                    userContextService.setCurrentUsername(username)
                     val authToken = UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
