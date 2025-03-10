@@ -9,7 +9,7 @@
             >
                 <li
                     @click="emit('historyLog', item.expression)"
-                    class="h-8 font-bold w-full text-right text-lg px-4 text-black flex items-center justify-end border-b-[1px] border-dashed overflow-clip whitespace-nowrap"
+                    class="h-8 font-bold w-full text-right text-lg px-4 text-black flex items-center justify-end border-b-[1px] border-dashed overflow-clip whitespace-nowrap cursor-pointer"
                 >
                     {{ item.expression }} = {{ item.result }}
                 </li>
@@ -24,7 +24,7 @@
             <button
                 @click="$emit('update:pageNumber', pageNumber - 1)"
                 :disabled="pageNumber === 1"
-                class="flex items-center justify-center w-24 h-8 p-3 font-bold bg-gray-200 border-gray-300 rounded-lg shadow-md cursor-pointer hover:bg-gray-300 active:bg-gray-400 disabled:opacity-50 disabled:bg-gray-300 disabled:cursor-default disabled:hover:bg-gray-300"
+                class="flex items-center justify-center w-24 h-8 p-3 font-bold bg-gray-200 border-gray-300 rounded-lg shadow-md cursor-pointer hover:bg-gray-300 active:bg-gray-400 disabled:opacity-50 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300"
             >
                 Previous
             </button>
@@ -32,7 +32,7 @@
             <button
                 @click="$emit('update:pageNumber', pageNumber + 1)"
                 :disabled="pageNumber >= totalPages"
-                class="flex items-center justify-center w-24 h-8 p-3 font-bold bg-gray-200 border-gray-300 rounded-lg shadow-md cursor-pointer hover:bg-gray-300 active:bg-gray-400 disabled:opacity-50 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
+                class="flex items-center justify-center w-24 h-8 p-3 font-bold bg-gray-200 border-gray-300 rounded-lg shadow-md cursor-pointer hover:bg-gray-300 active:bg-gray-400 disabled:opacity-50 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300"
             >
                 Next
             </button>

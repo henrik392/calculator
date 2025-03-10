@@ -7,26 +7,31 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 const username = ref('');
+const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
 const isLoading = ref(false);
 
-const handleLogin = async () => {
-    if (!username.value || !password.value) {
-        errorMessage.value = 'Username and password are required';
+const handleSignup = async () => {
+    if (!username.value || !email.value || !password.value) {
+        errorMessage.value = 'Username, email, and password are required';
         return;
     }
 
     isLoading.value = true;
     try {
-        const success = await authStore.login(username.value, password.value);
+        const success = await authStore.signup(
+            username.value,
+            email.value,
+            password.value
+        );
         if (success) {
             router.push('/');
         } else {
-            errorMessage.value = 'Invalid credentials';
+            errorMessage.value = 'User already exists';
         }
     } catch (error) {
-        errorMessage.value = 'An error occurred during login';
+        errorMessage.value = 'An error occurred during signup';
     } finally {
         isLoading.value = false;
     }
@@ -35,9 +40,9 @@ const handleLogin = async () => {
 
 <template>
     <div class="max-w-md w-full mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold mb-6 text-center">Log In</h2>
+        <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
 
-        <form @submit.prevent="handleLogin" class="space-y-4">
+        <form @submit.prevent="handleSignup" class="space-y-4">
             <div
                 v-if="errorMessage"
                 class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
@@ -55,6 +60,21 @@ const handleLogin = async () => {
                     id="username"
                     v-model="username"
                     type="username"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    required
+                />
+            </div>
+
+            <div>
+                <label
+                    for="email"
+                    class="block text-sm font-medium text-gray-700"
+                    >Email</label
+                >
+                <input
+                    id="email"
+                    v-model="email"
+                    type="email"
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     required
                 />
@@ -81,17 +101,17 @@ const handleLogin = async () => {
                     :disabled="isLoading"
                     class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 cursor-pointer"
                 >
-                    <span v-if="isLoading">Logging in...</span>
-                    <span v-else>Log In</span>
+                    <span v-if="isLoading">Signing up...</span>
+                    <span v-else>Sign Up</span>
                 </button>
             </div>
 
             <div class="text-center mt-4">
                 <router-link
-                    to="/signup"
+                    to="/login"
                     class="text-sm text-blue-400 hover:text-blue-500"
                 >
-                    Don't have an account? Sign up
+                    Have an account? Sign in
                 </router-link>
             </div>
         </form>

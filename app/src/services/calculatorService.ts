@@ -1,4 +1,4 @@
-import { API_CONFIG, buildApiUrl } from '../config/api';
+import api, { API_CONFIG, buildApiUrl } from '../config/api';
 
 interface CalculationRequest {
     expression: string;
@@ -26,24 +26,20 @@ export const calculatorService = {
             );
 
             const request: CalculationRequest = { expression };
-            const response = await fetch(buildApiUrl('calculate').toString(), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(request),
-                signal: controller.signal,
-            });
-
+            const response = await api.post<CalculationResponse>(
+                buildApiUrl('calculate').toString(),
+                request,
+                { signal: controller.signal }
+            );
             clearTimeout(timeoutId);
 
-            if (!response.ok) {
+            if (response.status !== 200) {
                 throw new Error(
                     `Calculation failed with status: ${response.status}`
                 );
             }
 
-            const data: CalculationResponse = await response.json();
+            const data = response.data;
             return data.result;
         } catch (error) {
             if (error instanceof Error && error.name === 'AbortError') {

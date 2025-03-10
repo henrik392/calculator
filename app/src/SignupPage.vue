@@ -1,11 +1,9 @@
 <template>
-    <div
-        class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
-    >
-        <LoginForm />
+    <div class="flex justify-center items-center h-screen">
+        <SignupForm />
     </div>
 </template>
 
 <script setup lang="ts">
-import LoginForm from './components/auth/LoginForm.vue';
+import SignupForm from './components/auth/SignupForm.vue';
 </script>
