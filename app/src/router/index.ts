@@ -4,8 +4,7 @@ import ContactPage from '../ContactPage.vue';
 import LoginPage from '../LoginPage.vue';
 
 const routes = [
-    { path: '/', component: HomePage, name: 'home' },
-    { path: '/home', redirect: '/' },
+    { path: '/', component: HomePage, name: 'home', requiresAuth: true },
     { path: '/login', component: LoginPage, name: 'login' },
     { path: '/contact', component: ContactPage, name: 'contact' },
 ];
@@ -16,3 +15,4 @@ const router = createRouter({
 });
 
 export default router;
+
