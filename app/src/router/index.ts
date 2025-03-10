@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../HomePage.vue';
 import ContactPage from '../ContactPage.vue';
 import LoginPage from '../LoginPage.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const routes = [
     { path: '/', component: HomePage, name: 'home', requiresAuth: true },
@@ -14,5 +15,14 @@ const router = createRouter({
     routes,
 });
 
-export default router;
+router.beforeEach((to, _from, next) => {
+    const authStore = useAuthStore();
 
+    if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+        next('/login');
+    } else {
+        next();
+    }
+});
+
+export default router;
