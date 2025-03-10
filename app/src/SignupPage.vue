@@ -1,5 +1,7 @@
 <template>
-    <SignupForm />
+    <div class="flex justify-center items-center h-screen">
+        <SignupForm />
+    </div>
 </template>
 
 <script setup lang="ts">

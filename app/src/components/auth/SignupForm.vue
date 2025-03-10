@@ -28,7 +28,7 @@ const handleSignup = async () => {
         if (success) {
             router.push('/');
         } else {
-            errorMessage.value = 'Invalid credentials';
+            errorMessage.value = 'User already exists';
         }
     } catch (error) {
         errorMessage.value = 'An error occurred during signup';
@@ -40,7 +40,7 @@ const handleSignup = async () => {
 
 <template>
     <div class="max-w-md w-full mx-auto p-6 bg-white rounded-lg shadow-md">
-        <h2 class="text-2xl font-bold mb-6 text-center">Log In</h2>
+        <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
 
         <form @submit.prevent="handleSignup" class="space-y-4">
             <div

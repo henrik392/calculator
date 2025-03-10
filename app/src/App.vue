@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-        <nav class="my-4">
-            <router-link to="/login">login</router-link>
+        <nav v-if="authStore.isAuthenticated" class="my-4">
+            <button class="cursor-pointer" v-on:click="logout()">Logout</button>
             <router-link to="/">Home</router-link>
             <router-link to="/contact">Contact</router-link>
         </nav>
@@ -9,7 +9,17 @@
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import router from './router';
+import { useAuthStore } from './stores/auth';
+
+const authStore = useAuthStore();
+
+const logout = () => {
+    authStore.logout();
+    router.push('/login');
+};
+</script>
 
 <style scoped>
 nav {
