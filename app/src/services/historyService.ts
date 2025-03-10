@@ -1,4 +1,4 @@
-import { API_CONFIG, buildApiUrl } from '../config/api';
+import api, { API_CONFIG, buildApiUrl } from '../config/api';
 
 interface PaginatedResponse<T> {
     content: T[];
@@ -38,20 +38,20 @@ export const historyService = {
             );
 
             const url = buildApiUrl('history', { page, size });
-            const response = await fetch(url.toString(), {
-                signal: controller.signal,
-            });
+            const response = await api.get<PaginatedResponse<HistoryItem>>(
+                url.toString(),
+                { signal: controller.signal }
+            );
 
             clearTimeout(timeoutId);
 
-            if (!response.ok) {
+            if (response.status !== 200) {
                 throw new Error(
                     `Failed to fetch history with status: ${response.status}`
                 );
             }
 
-            const historyData: PaginatedResponse<HistoryItem> =
-                await response.json();
+            const historyData = response.data;
 
             return {
                 items: historyData.content,
