@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
-
 const props = defineProps<{
     history: { expression: string; result: string; id: number }[];
     pageNumber: number;

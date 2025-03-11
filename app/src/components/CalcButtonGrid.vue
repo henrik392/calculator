@@ -29,7 +29,6 @@
 
 <script setup lang="ts">
 import CalcButton from './CalcButton.vue';
-import { defineProps } from 'vue';
 
 const props = defineProps<{
     clear: () => void;
